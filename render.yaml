@@ -5,9 +5,10 @@ services:
     region: singapore
     plan: free
     buildCommand: chmod +x ./build.sh && ./build.sh
-    startCommand: cd backend && gunicorn edutube.wsgi:application
-    runtime: python3.10.7
+    startCommand: chmod +x ./start.sh && ./start.sh
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.7
       - key: DEBUG
         value: "False"
       - key: ALLOWED_HOSTS

@@ -2,6 +2,18 @@
 # exit on error
 set -o errexit
 
+# Check Python version
+echo "Checking Python version"
+python --version
+echo "Required Python version: 3.10.7"
+
+# Attempt to use Python 3.10 if available
+if command -v python3.10 &> /dev/null; then
+    echo "Python 3.10 is available, using it..."
+    alias python=python3.10
+    python --version
+fi
+
 # Print current directory
 echo "Current directory: $(pwd)"
 echo "Listing files: $(ls -la)"
