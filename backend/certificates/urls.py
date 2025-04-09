@@ -10,7 +10,7 @@ router.register(r'verifications', CertificateVerificationViewSet, basename='cert
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('<str:certificate_id>/verify/', verify_certificate, name='certificate-verify'),
+    path('verify/<str:certificate_id>/', verify_certificate, name='certificate-verify'),
     path('<str:certificate_id>/mint_nft/', mint_nft_certificate, name='certificate-mint-nft'),
     path('<str:certificate_id>/pdf/', serve_pdf, name='certificate-pdf'),
 ] 

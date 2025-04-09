@@ -18,10 +18,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-default-key-for-development')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-dev-key-change-this-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
@@ -54,6 +54,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -88,40 +89,27 @@ WSGI_APPLICATION = 'edutube.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# For now, we'll use SQLite for development to ensure the application works
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-# Once database connection issues are resolved, you can uncomment this code
-# to use the PostgreSQL database
-"""
-# Parse database connection url strings
-# The DATABASE_URL environment variable should be set as postgresql://username:password@hostname:port/database_name
-database_url = os.environ.get('DATABASE_URL', None)
-
-if database_url:
-    # Use the DATABASE_URL environment variable
+# Use SQLite for local development and PostgreSQL for production
+if 'DATABASE_URL' in os.environ:
+    # Use the DATABASE_URL environment variable (Render provides this automatically)
+    print("Using PostgreSQL database from DATABASE_URL")
     DATABASES = {
-        'default': dj_database_url.parse(database_url)
+        'default': dj_database_url.config(
+            default=os.environ['DATABASE_URL'],
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True,
+        )
     }
 else:
-    # Fallback to SQLite if no DATABASE_URL is provided
+    # Use SQLite for local development
+    print("Using SQLite database for local development")
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-
-# Configure timeout for database connections (helps with Supabase)
-for database in DATABASES.values():
-    database['CONN_MAX_AGE'] = 600  # 10 minutes
-    database['CONN_HEALTH_CHECKS'] = True
-"""
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -157,7 +145,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -189,26 +177,9 @@ REST_FRAMEWORK = {
 }
 
 # CORS settings
-CORS_ALLOWED_ORIGINS = os.environ.get(
-    'CORS_ALLOWED_ORIGINS', 
-    'http://localhost:3000,http://127.0.0.1:3000'
-).split(',')
-
-# Add CORS settings to allow credentials
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
 CORS_ALLOW_CREDENTIALS = True
-
-# Add additional CORS headers
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-]
 
 # Add CORS methods
 CORS_ALLOW_METHODS = [
@@ -236,8 +207,8 @@ PINATA_SECRET_API_KEY = os.environ.get('PINATA_SECRET_API_KEY', '')
 BLOCKCHAIN_NETWORK = os.environ.get('BLOCKCHAIN_NETWORK', 'polygon-mumbai')
 BLOCKCHAIN_RPC_URL = os.environ.get('BLOCKCHAIN_RPC_URL', 'https://rpc-mumbai.maticvigil.com')
 
-# Site URL - Used for verification links in certificates
-SITE_URL = os.environ.get('SITE_URL', 'https://edutube.learn')
+# Site URL for production
+SITE_URL = os.environ.get('SITE_URL', 'http://localhost:8000')
 
 # Add caching configuration
 CACHES = {
@@ -256,3 +227,9 @@ cloudinary.config(
     api_secret=os.environ.get('CLOUDINARY_API_SECRET', ''),
     secure=True
 )
+
+# Simplified static file serving
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Blockchain settings
+SIMULATE_MINTING = os.environ.get('SIMULATE_MINTING', 'True').lower() == 'true'

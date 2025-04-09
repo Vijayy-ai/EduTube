@@ -1,9 +1,17 @@
+// Configuration file for API endpoints and other constants
 const config = {
-    API_URL: (process.env.REACT_APP_API_URL || 'http://localhost:8000/api').replace(/\/$/, ''),
-    AUTH_API_URL: process.env.REACT_APP_AUTH_API_URL || 'http://localhost:8000/api-token-auth/',
-    YOUTUBE_API_KEY: process.env.REACT_APP_YOUTUBE_API_KEY,
-    THIRDWEB_CLIENT_ID: process.env.REACT_APP_THIRDWEB_CLIENT_ID,
-    THIRDWEB_CHAIN: process.env.REACT_APP_THIRDWEB_CHAIN || 'polygon-mumbai',
+    // API URL for backend services
+    API_URL: process.env.REACT_APP_API_URL || 'https://edutube-backend.onrender.com/api',
+    
+    // Authentication API URL
+    AUTH_API_URL: process.env.REACT_APP_AUTH_API_URL || 'https://edutube-backend.onrender.com/api-token-auth',
+    
+    // Default values
+    DEFAULT_PAGINATION_LIMIT: 10,
+    
+    // Feature flags
+    ENABLE_NFT_FEATURES: true,
+    ENABLE_ADVANCED_QUIZ: true,
 };
 
 export default config; 

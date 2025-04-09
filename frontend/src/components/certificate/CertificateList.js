@@ -29,6 +29,8 @@ const CertificateList = () => {
           }
         });
         
+        console.log("Certificate API response:", response.data);
+        
         // Ensure that response.data is an array
         if (response.data && response.data.results) {
           // If the API returns a paginated response with results field
@@ -36,6 +38,19 @@ const CertificateList = () => {
         } else if (Array.isArray(response.data)) {
           // If the API returns an array directly
           setCertificates(response.data);
+        } else if (response.data && typeof response.data === 'object') {
+          // Try to extract certificates if the data is in a different format
+          if (Array.isArray(response.data.certificates)) {
+            setCertificates(response.data.certificates);
+          } else {
+            // Last resort - convert object to array
+            const certArray = Object.values(response.data).filter(item => typeof item === 'object');
+            if (certArray.length > 0) {
+              setCertificates(certArray);
+            } else {
+              setCertificates([]);
+            }
+          }
         } else {
           // If the response is in an unexpected format, use an empty array
           console.error('Unexpected response format:', response.data);
@@ -55,9 +70,13 @@ const CertificateList = () => {
         
         setLoading(false);
       } catch (err) {
-        setError('Failed to load certificates');
-        setLoading(false);
         console.error('Error fetching certificates:', err);
+        if (err.response && err.response.status === 404) {
+          setError('The certificates feature may not be available yet');
+        } else {
+          setError('Failed to load certificates: ' + (err.response?.data?.error || err.message));
+        }
+        setLoading(false);
       }
     };
 

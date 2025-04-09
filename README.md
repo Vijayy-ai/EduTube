@@ -1,66 +1,87 @@
-# EduTube
+# EduTube Learning Platform
 
-A web application for creating educational courses from YouTube content, with built-in quiz generation and blockchain-verified certificates.
+A modern online learning platform built with Django and React.
 
-## Environment Setup
+## Local Development with SQLite
 
-This project requires several environment variables to be set up. Follow these steps to get started:
+The project is configured to use SQLite for local development, making it easier to set up and test.
 
-### Backend Environment Setup
+### Setup Instructions
 
-1. Copy the example environment file:
-   ```bash
-   cp backend/.env.example backend/.env
+1. Clone the repository:
+   ```
+   git clone <repository-url>
+   cd Edutube
    ```
 
-2. Edit the `backend/.env` file and fill in your own values for each environment variable:
-   - Add your Django secret key
-   - Add API keys for YouTube, Firebase, ThirdWeb, Pinata, and Cloudinary
-   - Configure your database connection
-
-### Frontend Environment Setup
-
-1. Copy the example environment file:
-   ```bash
-   cp frontend/.env.example frontend/.env
+2. Set up the backend:
+   ```
+   cd backend
+   pip install -r requirements.txt
+   python manage.py migrate
+   python manage.py createsuperuser
+   python manage.py runserver
    ```
 
-2. Edit the `frontend/.env` file and fill in your own values for each environment variable:
-   - Add your Firebase configuration
-   - Add your YouTube API key
-   - Add your ThirdWeb client ID and contract address
+3. Set up the frontend:
+   ```
+   cd frontend
+   npm install
+   npm start
+   ```
 
-## Important Security Notes
+4. Access the application at http://localhost:3000
 
-- Never commit `.env` files or service account keys to the repository
-- The `.gitignore` file is configured to exclude sensitive files like `.env` and `serviceAccountKey.json`
-- Make sure to keep your API keys and secrets secure and rotate them regularly
+## Deploying to Render
 
-## Installation
+The project is configured to deploy to Render with automatic PostgreSQL database setup.
 
-### Backend
+### Deployment Instructions
 
-```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
-```
+1. Before deploying, export your local data (if needed):
+   ```
+   cd backend
+   python export_db.py
+   ```
+   This creates a JSON file with your local data.
 
-### Frontend
+2. Push your code to GitHub.
 
-```bash
-cd frontend
-npm install
-npm start
-```
+3. Connect your GitHub repo to Render.
 
-## Features
+4. Create a new Web Service in Render:
+   - Choose "Build and deploy from a Git repository"
+   - Select your GitHub repo
+   - The `render.yaml` file will automatically configure:
+     - The Django backend service
+     - A PostgreSQL database
+     - All necessary environment variables
 
-- Course creation from YouTube videos and playlists
-- Automatic quiz generation using AI
-- Certificate generation for completed courses
-- Blockchain verification of certificates using NFTs
-- User dashboard to track progress 
+5. After deployment is complete, you can import your local data (if needed):
+   - Go to the Render dashboard
+   - Open a shell for your backend service
+   - Upload your exported JSON file
+   - Run:
+     ```
+     python manage.py loaddata your_export_file.json
+     ```
+
+### Important Notes
+
+- The project automatically uses SQLite locally and PostgreSQL on Render
+- The `DATABASE_URL` environment variable is automatically set by Render
+- All other required environment variables are defined in `render.yaml`
+
+## Troubleshooting
+
+If you encounter database connection issues on Render:
+
+1. Check the logs in the Render dashboard
+2. Verify that the PostgreSQL database service is running
+3. The database connection is automatically managed by Render through the `DATABASE_URL` environment variable
+
+## Additional Resources
+
+- [Render Documentation](https://render.com/docs)
+- [Django Documentation](https://docs.djangoproject.com/)
+- [React Documentation](https://reactjs.org/docs/getting-started.html) 

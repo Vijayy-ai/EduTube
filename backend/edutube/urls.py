@@ -21,8 +21,8 @@ urlpatterns = [
         # Quizzes app
         path('', include('quizzes.urls')),
         
-        # Certificates app
-        path('', include('certificates.urls')),
+        # Certificates app - ensure this route is properly registered
+        path('certificates/', include('certificates.urls')),
         
         # Legacy API endpoints (marked for deprecation)
         # These should eventually be removed or properly refactored
