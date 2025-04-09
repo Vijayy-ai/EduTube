@@ -6,6 +6,7 @@ services:
     plan: free
     buildCommand: chmod +x ./build.sh && ./build.sh
     startCommand: cd backend && gunicorn edutube.wsgi:application
+    runtime: python3.10.7
     envVars:
       - key: DEBUG
         value: "False"
