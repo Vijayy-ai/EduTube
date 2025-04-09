@@ -4,8 +4,8 @@ services:
     env: python
     region: singapore
     plan: free
-    buildCommand: pip install -r backend/requirements.txt
-    startCommand: cd backend && python manage.py migrate && gunicorn edutube.wsgi:application
+    buildCommand: chmod +x ./build.sh && ./build.sh
+    startCommand: cd backend && gunicorn edutube.wsgi:application
     envVars:
       - key: DEBUG
         value: "False"
