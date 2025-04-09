@@ -1,0 +1,74 @@
+# Environment files
+.env
+.env.*
+*.env
+
+venv_edutube
+# Frontend
+frontend/.env
+frontend/.env.*
+frontend/*.env
+
+# Database
+*.sqlite3
+*.db
+db.sqlite3
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+.egg-info/
+dist/
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv/
+
+# Log files
+*.log
+logs/
+
+# Service account keys and credentials
+serviceAccountKey.json
+*firebase*.json
+*credential*.json
+*key*.json
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+.pnp.*
+.npm
+.yarn
+
+# Misc
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+.project
+*.swp
+*.swo
+*~

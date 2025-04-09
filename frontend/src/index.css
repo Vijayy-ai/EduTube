@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+@layer base {
+  body {
+    @apply bg-white min-h-screen;
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  h1 {
+    @apply text-4xl font-bold text-gray-800;
+  }
+  
+  h2 {
+    @apply text-3xl font-bold text-gray-800;
+  }
+  
+  h3 {
+    @apply text-2xl font-semibold text-gray-800;
+  }
+  
+  a {
+    @apply text-primary-600 hover:text-primary-700 transition-colors;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-6 py-3 rounded-full font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-opacity-50;
+  }
+  
+  .btn-primary {
+    @apply text-white focus:ring-primary-500 shadow-button;
+    background: linear-gradient(90deg, #7139f7 0%, #1a6ef4 100%);
+  }
+  
+  .btn-primary:hover {
+    filter: brightness(1.05);
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-primary-600 hover:text-primary-700 border hover:border-primary-500 hover:bg-primary-50 focus:ring-primary-500;
+  }
+  
+  .btn-accent {
+    @apply bg-accent-500 text-white hover:bg-accent-600 focus:ring-accent-400;
+  }
+  
+  .card {
+    @apply bg-white rounded-2xl shadow-card p-6 transition-all duration-300 hover:shadow-lg border border-gray-100;
+  }
+  
+  .badge {
+    @apply px-3 py-1 rounded-full text-xs font-medium;
+  }
+  
+  .badge-primary {
+    @apply bg-primary-100 text-primary-800;
+  }
+  
+  .badge-secondary {
+    @apply bg-secondary-100 text-secondary-800;
+  }
+  
+  .badge-accent {
+    @apply bg-accent-100 text-accent-800;
+  }
+  
+  .form-input {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+  }
+  
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 mb-2;
+  }
+  
+  .form-group {
+    @apply mb-5;
+  }
+  
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .section {
+    @apply py-16 md:py-24;
+  }
+  
+  /* New Pody-inspired styles */
+  .gradient-heading {
+    @apply font-bold bg-clip-text text-transparent;
+    background-image: linear-gradient(90deg, #7139f7 0%, #1a6ef4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .gradient-bg {
+    @apply bg-gradient-to-r from-primary-600 to-secondary-600;
+  }
+  
+  .gradient-animate {
+    background-size: 200% 200%;
+    animation: gradientMove 2s ease infinite;
+    -webkit-animation: gradientMove 2s ease infinite;
+  }
+  
+  .blob-shape {
+    @apply absolute opacity-70 blur-3xl z-behind;
+    animation: float 8s ease-in-out infinite;
+  }
+  
+  .card-hover-effect {
+    @apply transition-all duration-300;
+    transform: translateY(0);
+  }
+  
+  .card-hover-effect:hover {
+    transform: translateY(-8px);
+    @apply shadow-xl;
+  }
+  
+  .meeting-card {
+    @apply bg-white rounded-xl shadow-md overflow-hidden border border-gray-100;
+  }
+  
+  .meeting-time {
+    @apply px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700;
+  }
+}
+
+/* Shadow effect for hero elements */
+.hero-shadow {
+  box-shadow: 0 25px 50px -12px rgba(113, 57, 247, 0.15);
+}
+
+/* Animated gradient background */
+.animated-gradient {
+  background-size: 200% 200%;
+  animation: gradientAnimation 15s ease infinite;
+}
+
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@layer utilities {
+  /* Add utility classes for z-indices */
+  .z-behind {
+    z-index: -1;
+  }
+  
+  .z-deeper {
+    z-index: -5;
+  }
+  
+  .z-deepest {
+    z-index: -10;
+  }
+  
+  .z-nav {
+    z-index: 50;
+  }
+}
