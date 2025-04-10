@@ -1,1 +1,1 @@
-web: gunicorn wsgi:application 
+web: PYTHONPATH=$PYTHONPATH:$PWD:$PWD/backend:$PWD/backend/edutube gunicorn wsgi:application 

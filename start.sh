@@ -25,12 +25,21 @@ if [ -f "gunicorn_config.py" ]; then
     echo "✅ Archivo de configuración de Gunicorn encontrado"
 else
     echo "❌ ERROR: No se encontró el archivo de configuración de Gunicorn"
-    exit 1
+    # Not exiting here, will use command line parameters instead
+    echo "Usando parámetros de línea de comandos en su lugar"
 fi
 
-# Configurar PYTHONPATH si es necesario
-export PYTHONPATH=$PYTHONPATH:$(pwd)
+# Configurar PYTHONPATH para incluir directorio actual y directorio edutube
+export PYTHONPATH=$PYTHONPATH:$(pwd):$(pwd)/edutube
 
-# Iniciar Gunicorn con el archivo de configuración
-echo "Iniciando Gunicorn con archivo de configuración..."
-exec gunicorn -c gunicorn_config.py edutube.wsgi:application 
+echo "PYTHONPATH configurado como: $PYTHONPATH"
+
+# Iniciar Gunicorn
+echo "Iniciando Gunicorn..."
+if [ -f "gunicorn_config.py" ]; then
+    # Usar archivo de configuración
+    exec gunicorn -c gunicorn_config.py edutube.wsgi:application
+else
+    # Usar parámetros de línea de comandos
+    exec gunicorn --bind=0.0.0.0:${PORT:-8000} --workers=2 --threads=2 --timeout=120 edutube.wsgi:application
+fi 
