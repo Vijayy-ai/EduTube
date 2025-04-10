@@ -33,4 +33,4 @@ export PYTHONPATH=$PYTHONPATH:$(pwd)
 
 # Iniciar Gunicorn con el archivo de configuración
 echo "Iniciando Gunicorn con archivo de configuración..."
-exec gunicorn -c gunicorn_config.py 
+exec gunicorn -c gunicorn_config.py edutube.wsgi:application 
