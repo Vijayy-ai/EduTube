@@ -12,7 +12,17 @@ sys.path.insert(0, backend_path)
 
 # Import the actual WSGI application
 try:
-    from edutube.wsgi import application
+    # More explicit import that should work better with IDEs
+    import sys
+    import os
+    
+    # Try different import methods in sequence
+    try:
+        # Direct import of the application object
+        from backend.edutube.wsgi import application
+    except ImportError:
+        # Fall back to normal import after path adjustment
+        from edutube.wsgi import application  # type: ignore
 except ImportError as e:
     print(f"ERROR: Failed to import 'edutube.wsgi.application': {e}")
     print(f"Python path: {sys.path}")
