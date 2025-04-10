@@ -1,1 +1,1 @@
-web: PYTHONPATH=$PYTHONPATH:$PWD:$PWD/backend:$PWD/backend/edutube gunicorn wsgi:application 
+web: PYTHONPATH=$PYTHONPATH:$PWD:$PWD/backend gunicorn backend_wsgi:application --bind=0.0.0.0:$PORT --log-level=debug 

@@ -43,4 +43,31 @@ python manage.py migrate
 
 # Collect static files
 echo "Collecting static files"
-python manage.py collectstatic --no-input 
+python manage.py collectstatic --no-input
+
+# Create a custom startup script in the project root
+echo "Creating custom startup script..."
+cd ..
+cat > start_server.sh << 'EOF'
+#!/bin/bash
+# Custom startup script for Render
+
+# Set working directory to backend
+cd /opt/render/project/src/backend
+
+# Add backend directory to Python path
+export PYTHONPATH=/opt/render/project/src:/opt/render/project/src/backend
+
+# Print environment for debugging
+echo "PYTHONPATH: $PYTHONPATH"
+echo "Current directory: $(pwd)"
+echo "Directory contents:"
+ls -la
+
+# Start Gunicorn with the correct module path
+exec gunicorn --bind=0.0.0.0:${PORT:-10000} --workers=2 --threads=2 --timeout=120 edutube.wsgi:application
+EOF
+
+# Make the script executable
+chmod +x start_server.sh
+echo "Custom startup script created successfully" 
