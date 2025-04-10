@@ -1,1 +1,1 @@
-web: cd backend && PYTHONPATH=$PYTHONPATH:$(pwd) gunicorn edutube.wsgi:application 
+web: gunicorn wsgi:application 
